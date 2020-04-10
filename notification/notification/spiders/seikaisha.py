@@ -14,6 +14,9 @@ class SeikaishaSpider(scrapy.Spider):
         books = []
         for section in soup.select('#publication > section'):
             book = Book()
+            book['isbn'] = section \
+                .select_one('.publication-meta > dd:nth-of-type(3)') \
+                .text.replace('-', '')
             book['title'] = section.select_one('.entry-title a').text
             book['author'] = section \
                 .select_one('.publication-meta > dd:nth-of-type(1)') \
