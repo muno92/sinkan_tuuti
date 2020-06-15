@@ -13,7 +13,6 @@ class FantasiaSpider(scrapy.Spider):
 
     def parse(self, response):
         soup = BeautifulSoup(response.text, 'html.parser')
-        books = []
         pattern = re.compile(r'\d{4}年\d{1,2}月\d{1,2}日')
         for li in soup.select('.booksSingleList > li'):
             book = Book()
@@ -25,5 +24,4 @@ class FantasiaSpider(scrapy.Spider):
                 li.select_one('.release').text
             ).group()
 
-            books.append(book)
-        print(books)
+            yield book

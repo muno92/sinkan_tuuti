@@ -11,7 +11,7 @@ class SeikaishaSpider(scrapy.Spider):
 
     def parse(self, response):
         soup = BeautifulSoup(response.text, 'html.parser')
-        books = []
+
         for section in soup.select('#publication > section'):
             book = Book()
             book['isbn'] = section \
@@ -27,5 +27,4 @@ class SeikaishaSpider(scrapy.Spider):
                 + section.select_one('.release-date .month').text \
                 + section.select_one('.release-date .day').text
 
-            books.append(book)
-        print(books)
+            yield book

@@ -14,7 +14,6 @@ class GagagaSpider(scrapy.Spider):
 
     def parse(self, response):
         soup = BeautifulSoup(response.text, 'html.parser')
-        books = []
 
         isbn_pattern = re.compile(r'\d[\d\-]+\d')
         author_pattern = re.compile(r'著：(.+)　イラスト')
@@ -34,5 +33,4 @@ class GagagaSpider(scrapy.Spider):
             book['author'] = re.search(author_pattern, title_text).group(1)
             book['publishing_date'] = publishing_date
 
-            books.append(book)
-        print(books)
+            yield book
