@@ -16,7 +16,7 @@ class GagagaSpider(scrapy.Spider):
         soup = BeautifulSoup(response.text, 'html.parser')
 
         isbn_pattern = re.compile(r'\d[\d\-]+\d')
-        author_pattern = re.compile(r'著：(.+)　イラスト')
+        author_pattern = re.compile(r'著：(.+)[ 　]*イラスト')
         publishing_date = str(datetime.date.today().year) + '年' + \
                           re.search(
                               r'\d{1,2}月\d{1,2}日',
