@@ -10,6 +10,7 @@ scrapy = "*"
 beautifulsoup4 = "*"
 lxml = "*"
 slackweb = "*"
+psycopg2-binary = "*"
 
 [requires]
 python_version = "3.7"

@@ -65,6 +65,7 @@ ROBOTSTXT_OBEY = True
 # See https://docs.scrapy.org/en/latest/topics/item-pipeline.html
 ITEM_PIPELINES = {
     'notification.pipelines.SearchPipeline': 300,
+    'notification.pipelines.DbPipeline': 500,
     'notification.pipelines.SlackPipeline': 700,
 }
 
