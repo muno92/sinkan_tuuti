@@ -24,7 +24,10 @@ class SeikaishaSpider(scrapy.Spider):
 
             book['publishing_date'] = \
                 section.select_one('.release-date .year').text \
+                    .replace('年', '-') \
                 + section.select_one('.release-date .month').text \
-                + section.select_one('.release-date .day').text
+                    .replace('月', '-') \
+                + section.select_one('.release-date .day').text \
+                    .replace('日', '')
 
             yield book

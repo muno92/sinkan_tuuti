@@ -13,15 +13,16 @@ class FantasiaSpider(scrapy.Spider):
 
     def parse(self, response):
         soup = BeautifulSoup(response.text, 'html.parser')
-        pattern = re.compile(r'\d{4}年\d{1,2}月\d{1,2}日')
+        pattern = re.compile(r'(\d{4})年(\d{1,2})月(\d{1,2})日')
         for li in soup.select('.booksSingleList > li'):
             book = Book()
 
             book['isbn'] = li["data-isbn"]
             book['title'] = li["data-title"]
             book['author'] = li.select_one('.author > li:first-child a').text
-            book['publishing_date'] = pattern.search(
-                li.select_one('.release').text
-            ).group()
+            capture_date = pattern.search(li.select_one('.release').text)
+            book['publishing_date'] = capture_date.group(1) + '-' \
+                                      + capture_date.group(
+                2) + '-' + capture_date.group(3)
 
             yield book

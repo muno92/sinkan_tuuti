@@ -17,12 +17,15 @@ class GagagaSpider(scrapy.Spider):
 
         isbn_pattern = re.compile(r'\d[\d\-]+\d')
         author_pattern = re.compile(r'著：(.+)[ 　]*イラスト')
-        publishing_date = str(datetime.date.today().year) + '年' + \
-                          re.search(
-                              r'\d{1,2}月\d{1,2}日',
-                              soup.select_one(
-                                  '#contBg .headingReleasedate').text
-                          ).group()
+
+        capture_date = re.search(
+            r'(\d{1,2})月(\d{1,2})日',
+            soup.select_one(
+                '#contBg .headingReleasedate').text
+        )
+
+        publishing_date = str(datetime.date.today().year) + '-' + \
+                          capture_date.group(1) + '-' + capture_date.group(2)
 
         for section in soup.select('#contBg > section'):
             title_text = section.select_one('#title').text
