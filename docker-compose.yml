@@ -1,0 +1,12 @@
+version: "3"
+services:
+  sinkan_db:
+    container_name: sinkan_db
+    build:
+      context: ./PostgreSQL
+    image: sinkan_db
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+    ports:
+      - "15432:5432"
