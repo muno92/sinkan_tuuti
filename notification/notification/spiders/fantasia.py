@@ -20,9 +20,12 @@ class FantasiaSpider(scrapy.Spider):
             book['isbn'] = li["data-isbn"]
             book['title'] = li["data-title"]
             book['author'] = li.select_one('.author > li:first-child a').text
+
             capture_date = pattern.search(li.select_one('.release').text)
-            book['publishing_date'] = capture_date.group(1) + '-' \
-                                      + capture_date.group(
-                2) + '-' + capture_date.group(3)
+            year = capture_date.group(1)
+            month = capture_date.group(2)
+            date = capture_date.group(3)
+
+            book['publishing_date'] = f'{year}-{month}-{date}'
 
             yield book
