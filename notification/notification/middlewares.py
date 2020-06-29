@@ -4,8 +4,12 @@
 #
 # See documentation in:
 # https://docs.scrapy.org/en/latest/topics/spider-middleware.html
+import traceback
+from os import environ
 
 from scrapy import signals
+from scrapy.exceptions import DropItem
+from slackweb import slackweb
 
 
 class NotificationSpiderMiddleware(object):
@@ -101,3 +105,17 @@ class NotificationDownloaderMiddleware(object):
 
     def spider_opened(self, spider):
         spider.logger.info('Spider opened: %s' % spider.name)
+
+
+class NotificationErrorMiddleware(object):
+    def process_spider_exception(self, response, exception, spider):
+        webhook_url = environ.get('SINKAN_TUUTI_SLACK_URL')
+        if not webhook_url:
+            raise DropItem('webhook url is not defined.')
+
+        message = 'url: ' + response.url + '\n'
+        message += traceback.format_exc()
+
+        slack = slackweb.Slack(webhook_url)
+        slack.notify(text=message)
+        return None
