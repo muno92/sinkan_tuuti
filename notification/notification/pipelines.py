@@ -49,7 +49,8 @@ class DbPipeline(object):
             port=int(environ.get('DB_PORT')),
             user=environ.get('DB_NAME'),
             password=environ.get('DB_USER'),
-            database=environ.get('DB_PASSWORD')
+            database=environ.get('DB_PASSWORD'),
+            sslmode='require'
         )
 
     def is_notified(self, item):
