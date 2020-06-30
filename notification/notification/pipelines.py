@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import textwrap
+import traceback
 from os import environ
 
 import psycopg2
@@ -27,10 +28,20 @@ class SearchPipeline(object):
 
 class DbPipeline(object):
     def process_item(self, item, spider):
-        if self.is_notified(item):
-            raise DropItem(f'{item["title"]} is notified.')
-        self.save_notification_log(item)
-        return item
+        try:
+            if self.is_notified(item):
+                raise DropItem(f'{item["title"]} is notified.')
+            self.save_notification_log(item)
+            return item
+        except Exception:
+            webhook_url = environ.get('SINKAN_TUUTI_SLACK_URL')
+            if webhook_url:
+                message = 'title: ' + item["title"] + '\n'
+                message += traceback.format_exc()
+
+                slack = slackweb.Slack(webhook_url)
+                slack.notify(text=message)
+            raise DropItem('DB Error.')
 
     def get_connection(self):
         return psycopg2.connect(
