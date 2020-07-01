@@ -33,7 +33,7 @@ class DbPipeline(object):
                 raise DropItem(f'{item["title"]} is notified.')
             self.save_notification_log(item)
             return item
-        except Exception:
+        except psycopg2.Error:
             webhook_url = environ.get('SINKAN_TUUTI_SLACK_URL')
             if webhook_url:
                 message = 'title: ' + item["title"] + '\n'
