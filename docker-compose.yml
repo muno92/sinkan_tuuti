@@ -1,5 +1,10 @@
 version: "3"
 services:
+  sinkan_app:
+    container_name: sinkan_app
+    build:
+      context: .
+    image: sinkan_app
   sinkan_db:
     container_name: sinkan_db
     build:
