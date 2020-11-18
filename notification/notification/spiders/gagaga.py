@@ -27,7 +27,7 @@ class GagagaSpider(scrapy.Spider):
         publishing_date = str(datetime.date.today().year) + '-' + \
                           capture_date.group(1) + '-' + capture_date.group(2)
 
-        for section in soup.select('#contBg > section'):
+        for section in soup.select('#contBg > section.content'):
             title_text = section.select_one('#title').text
             book = Book()
             book['isbn'] = re.search(isbn_pattern, title_text) \
