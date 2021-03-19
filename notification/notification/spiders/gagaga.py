@@ -33,6 +33,9 @@ class GagagaSpider(scrapy.Spider):
             book['isbn'] = re.search(isbn_pattern, title_text) \
                 .group().replace('-', '')
             book['title'] = section.select_one('h3').text
+            # 画集は著者がいないが、そもそも書誌情報を取得する必要がない
+            if re.match(author_pattern, title_text) is not True:
+                continue
             book['author'] = re.search(author_pattern, title_text).group(1)
             book['publishing_date'] = publishing_date
 
